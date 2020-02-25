@@ -13,7 +13,7 @@ var (
 )
 
 //创建框架实例,并赋值全局变量R
-var router = gin.New()
+var Engine = gin.New()
 
 //日志文件writter
 var F *os.File
@@ -21,16 +21,14 @@ var F *os.File
 func Run() {
 	//初始化框架配置
 	Config.InitConfig(ENVIRONMENT)
+	//日志记录中间件
+	Engine.Use(Middleware.LoggerToFile())
+	//错误异常恢复中间件
+	Engine.Use(gin.Recovery())
+	//终止前端options请求,直接放回
+	Engine.Use(Middleware.Options)
 
-	//日志记录
-	router.Use(Middleware.LoggerToFile())
-
-	//注册自定义验证
-	//initValidator()
-
-	//Database.InitDb(F)
-	//Database.InitRedis()
-	Routers.InitRouters(router)
+	Routers.InitRouters(Engine)
 
 	//server start
 	initServer()

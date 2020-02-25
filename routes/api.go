@@ -2,17 +2,11 @@ package Routers
 
 import (
 	"gin-laravel/app/Http/Controllers/v1"
-	"gin-laravel/app/Http/Middleware"
 	"github.com/gin-gonic/gin"
 	"net/http"
 )
 
 func InitRouters(R *gin.Engine) {
-	//加载中间件模块
-	//终止前端options请求,直接放回
-	R.Use(Middleware.Options)
-	R.Use(gin.Recovery())
-	R.Use(gin.Logger())
 
 	//404处理
 	R.NoRoute(func(c *gin.Context) {
@@ -29,5 +23,4 @@ func InitRouters(R *gin.Engine) {
 		r1.GET("/d", v1.D)
 	}
 
-	return
 }

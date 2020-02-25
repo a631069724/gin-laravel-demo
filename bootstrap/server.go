@@ -5,6 +5,7 @@ import (
 	"fmt"
 	Config "gin-laravel/config"
 	"github.com/gin-gonic/gin"
+	"io/ioutil"
 	"log"
 	"net/http"
 	"os"
@@ -17,10 +18,11 @@ func initServer() {
 
 	//设置gin模式
 	gin.SetMode(Config.App.GetString("server.GinMode"))
+	gin.DefaultWriter = ioutil.Discard
 
 	srv := &http.Server{
 		Addr:    Config.App.GetString("server.Address"),
-		Handler: router,
+		Handler: Engine,
 	}
 
 	go func() {
