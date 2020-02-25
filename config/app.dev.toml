@@ -10,7 +10,7 @@
 	RouteOverWrite = true
 
 
-    LogPath           = "./logs/web"
+    LogPath           = "./storage/logs"
     LogStdout         = false
     ErrorStack        = true
     ErrorLogEnabled   = true

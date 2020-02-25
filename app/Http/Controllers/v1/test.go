@@ -5,24 +5,27 @@ import (
 )
 
 func C(c *gin.Context) {
-	c.JSON(200,"插入成功")
+	c.JSON(200, gin.H{
+		"code": 200,
+		"msg":  "插入成功",
+	})
 	return
 }
 
 func R(c *gin.Context) {
 
-	c.JSON(200,"r")
+	c.JSON(200, "r")
 	return
 }
 
-func U(c *gin.Context)  {
+func U(c *gin.Context) {
 
-	c.JSON(200,"u")
+	c.JSON(200, "u")
 	return
 }
 
-func D(c *gin.Context)  {
+func D(c *gin.Context) {
 
-	c.JSON(200,"删除成功")
+	c.JSON(200, "删除成功")
 	return
 }
