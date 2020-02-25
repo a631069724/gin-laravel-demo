@@ -17,3 +17,10 @@
     ErrorLogPattern   = "error.{Ymd}.log"
     AccessLogEnabled  = false
     AccessLogPattern  = "access.{Ymd}.log"
+
+# Redis数据库配置
+[redis]
+        host="127.0.0.1"
+        password="null"
+        port="6379"
+        database=0

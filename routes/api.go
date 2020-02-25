@@ -6,15 +6,15 @@ import (
 	"net/http"
 )
 
-func InitRouters(R *gin.Engine) {
+func InitRouters(Route *gin.Engine) {
 
 	//404处理
-	R.NoRoute(func(c *gin.Context) {
+	Route.NoRoute(func(c *gin.Context) {
 		c.String(http.StatusNotFound, http.StatusText(404))
 	})
 
 	//路由分组
-	r1 := R.Group("api/v1")
+	r1 := Route.Group("api/v1")
 	{
 		//路由设置示例
 		r1.GET("/c", v1.C)

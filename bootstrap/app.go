@@ -5,6 +5,7 @@ import (
 	Config "gin-laravel/config"
 	Routers "gin-laravel/routes"
 	"github.com/gin-gonic/gin"
+	_ "github.com/mattn/go-sqlite3"
 	"os"
 )
 
@@ -29,6 +30,11 @@ func Run() {
 	Engine.Use(Middleware.Options)
 
 	Routers.InitRouters(Engine)
+
+	//初始化redis
+	Config.InitRedis()
+	//初始化数据库
+	Config.InitDatabase()
 
 	//server start
 	initServer()
