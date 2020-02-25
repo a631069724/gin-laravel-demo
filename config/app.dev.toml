@@ -1,6 +1,6 @@
 # HTTP Server配置
 [server]
-    Env            = "dev"
+    Env          = "dev"
     GinMode        = "debug"
 
 	Address        = "127.0.0.1:8199"
@@ -24,3 +24,12 @@
         password="null"
         port="6379"
         database=0
+
+
+[sqlite]
+    driver    = "sqlite"
+    url= "test.db?cache=shared"
+    database= ""
+    prefix= ""
+    foreign_key_constraints= true
+
