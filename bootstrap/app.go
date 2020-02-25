@@ -1,13 +1,16 @@
 package main
 
 import (
+	"context"
 	"fmt"
-	"gin-laravel/bootstrap/Server"
 	Config "gin-laravel/config"
 	Routers "gin-laravel/routes"
 	"github.com/gin-gonic/gin"
+	"log"
 	"net/http"
 	"os"
+	"os/signal"
+	"time"
 )
 
 var (
@@ -15,7 +18,7 @@ var (
 )
 
 //创建框架实例,并赋值全局变量R
-var R = gin.New()
+var router = gin.New()
 
 //日志文件writter
 var F *os.File
@@ -30,7 +33,7 @@ func main() {
 
 	//Database.InitDb(F)
 	//Database.InitRedis()
-	Routers.InitRouters(R)
+	Routers.InitRouters(router)
 
 	//server start
 	initServer()
@@ -39,14 +42,34 @@ func main() {
 }
 
 func initServer() {
-	//设置gin模式
-	gin.SetMode("debug")
+	fmt.Printf("运行gin 模式%s http://%s \r\n", Config.App.GetString("server.GinMode"), Config.App.GetString("server.Address"))
 
-	server := &http.Server{
-		Addr:    "127.0.0.1:8080",
-		Handler: R,
+	//设置gin模式
+	gin.SetMode(Config.App.GetString("server.GinMode"))
+
+	srv := &http.Server{
+		Addr:    Config.App.GetString("server.Address"),
+		Handler: router,
 	}
 
-	Server.ListenAndServer(server)
-	//_ = R.Run(Config.Server)/**/
+	go func() {
+		// 服务连接
+		if err := srv.ListenAndServe(); err != nil && err != http.ErrServerClosed {
+			log.Fatalf("listen: %s\n", err)
+		}
+	}()
+
+	// 等待中断信号以优雅地关闭服务器（设置 5 秒的超时时间）
+	quit := make(chan os.Signal)
+	signal.Notify(quit, os.Interrupt)
+	<-quit
+	log.Println("Shutdown Server ...")
+
+	ctx, cancel := context.WithTimeout(context.Background(), 5*time.Second)
+	defer cancel()
+	if err := srv.Shutdown(ctx); err != nil {
+		log.Fatal("Server Shutdown:", err)
+	}
+	log.Println("Server exiting")
+
 }

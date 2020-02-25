@@ -1,8 +1,9 @@
 # HTTP Server配置
 [server]
     Env            = "dev"
+    GinMode        = "debug"
 
-	Address        = ":8199"
+	Address        = "127.0.0.1:8199"
 	ServerRoot     = "public"
 	ServerAgent    = "gf-demos"
 	NameToUriType  = 2
