@@ -1,6 +1,6 @@
 module gin-laravel
 
-go 1.13
+go 1.14
 
 require (
 	github.com/duolabmeng6/efun v1.0.6
