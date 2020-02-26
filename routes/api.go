@@ -2,6 +2,7 @@ package Routers
 
 import (
 	"gin-laravel/app/Http/Controllers/v1"
+	"gin-laravel/app/Http/Middleware"
 	"github.com/gin-gonic/gin"
 	"net/http"
 )
@@ -14,7 +15,7 @@ func InitRouters(Route *gin.Engine) {
 	})
 
 	//路由分组
-	r1 := Route.Group("api/v1")
+	r1 := Route.Group("api/v1").Use(Middleware.AUthMiddleware)
 	{
 		//路由设置示例
 		r1.GET("/c", v1.C)
